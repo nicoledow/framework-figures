@@ -1,10 +1,10 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 
 export default function AppHeader() {
     return(
-        <Container>
-            <h1>Framework Finder</h1>
-        </Container>
+        <Typography align={'center'} color={'primary'} variant={'h1'}>
+            Framework Figures
+        </Typography>
     ) 
 }
