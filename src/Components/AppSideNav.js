@@ -15,8 +15,7 @@ export default function AppSideNav() {
      } else {
         updateFrameworkSelections([...selectedFrameworks, framework]);
      }
-  };
-  
+  };  
 
   return (
     <Nav className="flex-column">
@@ -26,7 +25,9 @@ export default function AppSideNav() {
       {frameworksList.map((framework) => {
         return (
           <Nav.Item key={framework} justify={true}>
-            <Button onClick={(e) => selectFrameworkForComparison(framework)} color={"secondary"} selected={selectedFrameworks.includes(framework)}>
+            <Button onClick={(e) => selectFrameworkForComparison(framework)} 
+                style={{backgroundColor: selectedFrameworks.includes(framework) ? 'green' : 'white'}}
+            >
               {framework}
             </Button>
           </Nav.Item>
@@ -35,4 +36,4 @@ export default function AppSideNav() {
       <Button>Compare</Button>
     </Nav>
   );
-}
+};
