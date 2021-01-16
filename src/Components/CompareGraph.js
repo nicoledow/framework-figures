@@ -3,7 +3,9 @@ import React from 'react';
 export default function CompareGraph(props) {
     return(
         <div>
-           Comparison graph
+          {props.selectedFrameworks.map(framework => {
+              return <p>{framework}</p>;
+          })}
         </div>
     )
 }
