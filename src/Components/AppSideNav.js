@@ -4,6 +4,10 @@ import { Button, Typography } from "@material-ui/core";
 
 export default function AppSideNav(props) {
 
+const handleCompareClick = () => {
+   props.updateShouldDisplayGraph(true);
+}
+
   return (
     <Nav className="flex-column">
       <Typography variant={"h6"} color={"secondary"}>
@@ -18,7 +22,7 @@ export default function AppSideNav(props) {
           </Nav.Item>
         );
       })}
-      <Button>Compare</Button>
+      <Button onClick={handleCompareClick}>Compare</Button>
     </Nav>
   );
 };
