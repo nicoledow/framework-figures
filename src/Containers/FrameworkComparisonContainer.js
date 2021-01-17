@@ -1,44 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 
-import AppSideNav from "../Components/AppSideNav";
-import GraphContainer from "./GraphContainer";
+// import AppSideNav from "../Components/AppSideNav";
+import ChartTabs from '../Components/ChartTabs';
+import BarGraphContainer from "./BarGraphContainer";
 
 export default function FrameworkComparisonContainer() {
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
-  const [selectedFrameworks, updateFrameworkSelections] = useState([]);
-  const [shouldDisplayGraph, updateShouldDisplayGraph] = useState(false);
-
-  // remove (deselect) framework if it's already been selected, or add it to list for comparison
-  let newFrameworkSelections;
-  const selectFrameworkForComparison = (framework) => {
-    if (selectedFrameworks.includes(framework)) {
-      newFrameworkSelections = selectedFrameworks.filter(
-        (ele) => ele !== framework
-      );
-    } else {
-      newFrameworkSelections = [...selectedFrameworks, framework];
-    }
-    updateFrameworkSelections(newFrameworkSelections);
+  const repoInfo = {
+    React: { owner: "facebook", repoName: "react" },
+    Angular: { owner: "angular", repoName: "angular.js" },
+    Ember: { owner: "emberjs", repoName: "ember.js" },
+    Vue: { owner: "vuejs", repoName: "vue" },
   };
 
-  return (
-    <Grid container direction="row" justify="center" alignItems="center">
-      <Grid container item xs={4}>
-        <AppSideNav
-          frameworksList={frameworksList}
-          selectedFrameworks={selectedFrameworks}
-          selectFrameworkForComparison={selectFrameworkForComparison}
-          updateShouldDisplayGraph={updateShouldDisplayGraph}
-        />
-      </Grid>
+  const datapoints = ["Pull Requests", "Commits", "Issues"];
+  const [selectedTab, updateSelectedTab] = useState("Pull Requests");
+  const [chartData, updateChartData] = useState(null);
+  console.log("chartData", chartData);
 
-      <Grid container item xs={8}>
-        <GraphContainer
-          selectedFrameworks={selectedFrameworks}
-          shouldDisplayGraph={shouldDisplayGraph}
-        />
-      </Grid>
-    </Grid>
+
+
+  //fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
+    //pass this data to the BarGraph component
+
+
+  return (
+      <div className="text-center w-75">
+          <ChartTabs selectedTab={selectedTab} updateSelectedTab={updateSelectedTab} datapoints={datapoints} frameworks={frameworksList}/>
+            <BarGraphContainer selectedTab={selectedTab}/>
+      </div>
+ 
   );
 }
