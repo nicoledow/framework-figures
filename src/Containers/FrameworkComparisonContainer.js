@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 
 import AppSideNav from "../Components/AppSideNav";
-import CompareGraph from "../Components/CompareGraph";
+import GraphContainer from "./GraphContainer";
 
 export default function FrameworkComparisonContainer() {
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
@@ -13,7 +13,9 @@ export default function FrameworkComparisonContainer() {
   let newFrameworkSelections;
   const selectFrameworkForComparison = (framework) => {
     if (selectedFrameworks.includes(framework)) {
-      newFrameworkSelections = selectedFrameworks.filter(ele => ele !== framework);
+      newFrameworkSelections = selectedFrameworks.filter(
+        (ele) => ele !== framework
+      );
     } else {
       newFrameworkSelections = [...selectedFrameworks, framework];
     }
@@ -23,14 +25,19 @@ export default function FrameworkComparisonContainer() {
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid container item xs={4}>
-        <AppSideNav frameworksList={frameworksList} 
-            selectedFrameworks={selectedFrameworks} 
-            selectFrameworkForComparison={selectFrameworkForComparison}
-            updateShouldDisplayGraph={updateShouldDisplayGraph}/>
+        <AppSideNav
+          frameworksList={frameworksList}
+          selectedFrameworks={selectedFrameworks}
+          selectFrameworkForComparison={selectFrameworkForComparison}
+          updateShouldDisplayGraph={updateShouldDisplayGraph}
+        />
       </Grid>
 
       <Grid container item xs={8}>
-        <CompareGraph selectedFrameworks={selectedFrameworks} shouldDisplayGraph={shouldDisplayGraph}/>
+        <GraphContainer
+          selectedFrameworks={selectedFrameworks}
+          shouldDisplayGraph={shouldDisplayGraph}
+        />
       </Grid>
     </Grid>
   );

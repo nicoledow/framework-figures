@@ -41,7 +41,7 @@ export default function Chart(props) {
           allRepoData[framework] = repoData;
         })
         .catch((err) => {
-          alert("We're sorry, repository data could not be fetched.");
+          alert('Sorry, repository data could not be fetched.');
           console.log("err", err);
         });
     });

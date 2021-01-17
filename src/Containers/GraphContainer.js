@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Container, Typography } from "@material-ui/core";
 
-import ChartTabs from "./ChartTabs";
-import Chart from './Chart';
+import ChartTabs from "../Components/ChartTabs";
+import Chart from '../Components/Chart';
 
 export default function CompareGraph(props) {
   const datapoints = ["Pull Requests", "Commits", "Issues"];
