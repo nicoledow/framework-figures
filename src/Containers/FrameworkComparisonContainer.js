@@ -25,6 +25,7 @@ export default function FrameworkComparisonContainer() {
       <Grid container item xs={4}>
         <AppSideNav frameworksList={frameworksList} 
             selectedFrameworks={selectedFrameworks} 
+            selectFrameworkForComparison={selectFrameworkForComparison}
             updateShouldDisplayGraph={updateShouldDisplayGraph}/>
       </Grid>
 
