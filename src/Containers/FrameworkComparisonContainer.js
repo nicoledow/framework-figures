@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 
 // import AppSideNav from "../Components/AppSideNav";
 import ChartTabs from "../Components/ChartTabs";
-import BarGraphContainer from "./BarGraphContainer";
+import GraphContainer from "./GraphContainer";
 
 export default function FrameworkComparisonContainer() {
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
@@ -15,7 +15,7 @@ export default function FrameworkComparisonContainer() {
   };
 
   const datapoints = ["Pull Requests", "Commits", "Issues"];
-  const [selectedTab, updateSelectedTab] = useState("Pull Requests");
+  const [selectedTab, updateSelectedTab] = useState("Issues");
   const [chartData, updateChartData] = useState({});
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
@@ -23,10 +23,9 @@ export default function FrameworkComparisonContainer() {
     fetchGitHubData();
   }, []);
 
-  //fetch data for each issue and update state - this state will be passed to the graphs
-  const fetchGitHubData = async () => {
-    const issues = await fetchIssuesData();
-    updateChartData({ ...chartData, issues });
+  //fetch data for each metric
+  const fetchGitHubData = () => {
+    fetchIssuesData();
   };
 
   //fetch issues data from GitHub api for each framework and serialize into an object, issuesData, to be added to "chartData" in state
@@ -51,7 +50,8 @@ export default function FrameworkComparisonContainer() {
           });
         });
         console.log("issues data", issuesData);
-        return issuesData;
+        updateChartData({ ...chartData, Issues: issuesData });
+        return;
       })
       .catch((err) => {
         genericFetchError();
@@ -72,7 +72,11 @@ export default function FrameworkComparisonContainer() {
         datapoints={datapoints}
         frameworks={frameworksList}
       />
-      <BarGraphContainer selectedTab={selectedTab} chartData={chartData}/>
+      <GraphContainer
+        selectedTab={selectedTab}
+        chartData={chartData}
+        frameworks={frameworksList}
+      />
     </div>
   );
 }
