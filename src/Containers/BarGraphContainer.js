@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Container, Typography } from "@material-ui/core";
+
+import IssuesBarGraph from '../Components/IssuesBarGraph';
 
 export default function BarGraphContainer(props) {
-  return(
-    <div>Graph {props.selectedTab}</div>
-  )
+  
+  switch(props.selectedTab) {
+    case 'Issues':
+      return <IssuesBarGraph data={props.chartData}/>
+    default:
+      return(
+        <div>Chart {props.selectedTab}</div>
+      )
+  }
 }
 
