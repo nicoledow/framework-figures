@@ -1,26 +1,27 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import Chart from "chart.js";
 
 export default function BarGraph(props) {
+  console.log('bar graph props', props);
 
-  const chartType = props.chartConfig.type;
-  const frameworks = props.chartConfig.frameworks;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const canvas = document.getElementById("myChart");
+    const data = props.chartData[props.selectedTab]
 
-    if (props.chartConfig && props.chartConfig.data) {
-      const data = Object.values(props.chartConfig.data);
-
+    if (data) {
+      console.log('inside if data');
+      const valuesForGraph = Object.values(data);
+      
       const ctx = canvas.getContext("2d");
       const myChart = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: frameworks,
+          labels: props.frameworks,
           datasets: [
             {
-              label: `Number of ${chartType}`,
-              data,
+              label: `Number of ${props.selectedTab}`,
+              data: valuesForGraph,
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
@@ -39,8 +40,7 @@ export default function BarGraph(props) {
         },
       });
     }
-  }, []);
+  }, [props.selectedTab]);
 
-  // return props.chartConfig.data ? <canvas id="myChart" /> : <p>Loading...</p>;
-  return <canvas id="myChart"/>
+  return <canvas id="myChart" />;
 }

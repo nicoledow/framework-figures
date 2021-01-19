@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 
+import BarGraph from "../Components/BarGraph";
 import ChartTabs from "../Components/ChartTabs";
-import GraphContainer from "./GraphContainer";
 
 export default function FrameworkComparisonContainer() {
+
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
   const repoInfo = {
     React: { owner: "facebook", repoName: "react" },
@@ -18,10 +19,30 @@ export default function FrameworkComparisonContainer() {
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
   useEffect(() => {
-    fetchIssuesData();
-    fetchCountedResource('Commits');
-    fetchCountedResource('Pull Requests');
-  }, []);
+    fetchGiHubData();
+  }, [selectedTab]);
+
+  const fetchGiHubData = async() => {
+      console.log('in fetch git hub data', selectedTab);
+
+      switch(selectedTab) {
+          case 'Issues':
+              console.log('fetch issues data');
+              fetchIssuesData();
+              break;
+           case 'Pull Requests':
+               console.log('fetch pull requests');
+               fetchCountedResource('Pull Requests');
+               break;
+            case 'Commits':
+                console.log('fetch commits');
+                fetchCountedResource('Commits');
+                break;
+            default:
+                break;
+      }
+
+  }
 
   
   const fetchIssuesData = async() => {
@@ -35,6 +56,7 @@ export default function FrameworkComparisonContainer() {
               .then(resp => resp.json())
               .then(result => {
                   const numOfIssues = result.open_issues_count;
+                  console.log('num of issues', numOfIssues);
                   return numOfIssues;
               })
           )
@@ -44,6 +66,7 @@ export default function FrameworkComparisonContainer() {
       issuesData.Angular = await fetchIssuesForFramework('Angular');
       issuesData.Ember = await fetchIssuesForFramework('Ember');
       issuesData.Vue = await fetchIssuesForFramework('Vue');
+      console.log('issuesData', issuesData);
 
       updateChartData({...chartData, 'Issues': issuesData });
   }
@@ -107,7 +130,7 @@ export default function FrameworkComparisonContainer() {
         datapoints={datapoints}
         frameworks={frameworksList}
       />
-      <GraphContainer
+      <BarGraph
         selectedTab={selectedTab}
         chartData={chartData}
         frameworks={frameworksList}
