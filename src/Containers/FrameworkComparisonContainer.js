@@ -12,6 +12,11 @@ export default function FrameworkComparisonContainer() {
     Ember: { owner: "emberjs", repoName: "ember.js" },
     Vue: { owner: "vuejs", repoName: "vue" },
   };
+  const successMetrics = {
+      'Issues': 'lowest',
+      'Pull Requests': 'highest',
+      'Commits': 'highest'
+  }
 
   const datapoints = ["Pull Requests", "Commits", "Issues"];
   const [selectedTab, updateSelectedTab] = useState("Issues");
@@ -134,6 +139,7 @@ export default function FrameworkComparisonContainer() {
         selectedTab={selectedTab}
         chartData={chartData}
         frameworks={frameworksList}
+        successMetrics={successMetrics}
       />
     </div>
   );
