@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
 
-// import AppSideNav from "../Components/AppSideNav";
 import ChartTabs from "../Components/ChartTabs";
 import GraphContainer from "./GraphContainer";
 
@@ -26,6 +24,7 @@ export default function FrameworkComparisonContainer() {
   //fetch data for each metric
   const fetchGitHubData = () => {
     fetchIssuesData();
+    fetchPullRequestData();
   };
 
   //fetch issues data from GitHub api for each framework and serialize into an object, issuesData, to be added to "chartData" in state
@@ -49,7 +48,6 @@ export default function FrameworkComparisonContainer() {
             issuesData[frameworkName] = parsedData.open_issues_count;
           });
         });
-        console.log("issues data", issuesData);
         updateChartData({ ...chartData, Issues: issuesData });
         return;
       })
@@ -57,6 +55,37 @@ export default function FrameworkComparisonContainer() {
         genericFetchError();
         console.log("issues fetch error", err);
       });
+  };
+
+  //fetch num of pull requests for each framework, using pagination data to determine the total count
+  const fetchPullRequestData = () => {
+    const parse = require('parse-link-header');
+    let pullRequestData = {};
+
+    let allPRRequests = frameworksList.map(framework => {
+        let url = `https://api.github.com/repos/${repoInfo[framework].owner}/${repoInfo[framework].repoName}/pulls?per_page=1`;
+        return fetch(url, {
+            headers: { Accept: "application/vnd.github.v3+json" }
+        });
+    })
+    
+    Promise.all(allPRRequests)
+    .then(results => {
+        results.forEach(result => {
+            const paginationLinks = parse(result.headers.get('Link'));
+            const lastPageURL = paginationLinks.last.url;
+            const lastPageNum = parseInt(new URLSearchParams(lastPageURL.split('?').pop()).get('page'));
+            result.json().then(parsedBody => {
+                const frameworkName = Object.keys(repoInfo).find(key => repoInfo[key].repoName === parsedBody[0].head.repo.name);
+                pullRequestData[frameworkName] = lastPageNum;
+            })
+        })
+        updateChartData({ ...chartData, 'Pull Requests': pullRequestData });
+    })
+    .catch(err => {
+        genericFetchError();
+        console.log('pr fetch error', err);
+    })
   };
 
   //generic error for user when there is an issue fetching data from GitHub
