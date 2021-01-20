@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
+import _ from 'lodash';
 
 import BarGraph from "../Components/BarGraph";
 
 export default function FrameworkComparisonContainer() {
+
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
   const repoInfo = {
     React: { owner: "facebook", repoName: "react" },
@@ -18,13 +20,12 @@ export default function FrameworkComparisonContainer() {
   };
 
   const datapoints = ["Pull Requests", "Commits", "Issues"];
-  const [selectedTab, updateSelectedTab] = useState("Issues");
   const [chartData, updateChartData] = useState({});
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
   useEffect(() => {
     fetchGitHubData();
-  }, [selectedTab]);
+  }, []);
 
 
   const fetchGitHubData = async () => {
@@ -54,7 +55,11 @@ export default function FrameworkComparisonContainer() {
     issuesData.Ember = await fetchIssuesForFramework("Ember");
     issuesData.Vue = await fetchIssuesForFramework("Vue");
 
-    updateChartData({ ...chartData, Issues: issuesData });
+    
+    if (!chartData.Issues || !_.isEqual(chartData.Issues, issuesData)) {
+        console.log('issues state should update');
+        updateChartData({ ...chartData, Issues: issuesData });
+    } 
   };
 
   const fetchCountedResource = async (key) => {
@@ -82,9 +87,13 @@ export default function FrameworkComparisonContainer() {
     data.Ember = await fetchCountForFramework("Ember", key);
     data.Vue = await fetchCountForFramework("Vue", key);
 
-    const state = { ...chartData };
-    state[key] = data;
-    updateChartData(state);
+    const newChartData = { ...chartData };
+    newChartData[key] = data;
+
+    if (!chartData[key] || !_.isEqual(chartData[key], newChartData[key])) {
+        console.log(`should update state for ${key}`);
+        updateChartData(newChartData);
+    } 
   };
 
   //parse pagination links and get the 'last' page, revealing the number of that resource if per_page is set to 1
@@ -109,15 +118,16 @@ export default function FrameworkComparisonContainer() {
 
   return (
     <Grid container>
-        <Grid container item xs={6}>
-            <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        <Grid container item xs={8}>
+            <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null}/>
         </Grid>
-        <Grid container item xs={6}>
-            <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        <Grid container item xs={8}>
+            <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'}/>
         </Grid>
-        <Grid container item xs={6}>
-            <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        <Grid container item xs={8}>
+            <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'}/>
         </Grid>
     </Grid>
   );
+
 }

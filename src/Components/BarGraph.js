@@ -5,12 +5,20 @@ export default function BarGraph(props) {
   console.log("bar graph props", props);
 
   useEffect(() => {
+
+    let interval = setInterval(() => {
+      console.log('refresh data');
+      props.refreshData(props.refreshArg);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  })
+
+  useEffect(() => {
     const canvas = document.getElementById(`myChart_${props.datapoint}`);
     const data = props.chartData[props.datapoint];
-    console.log('data?', data);
 
     if (data) {
-      console.log("inside if data");
       const valuesForGraph = Object.values(data);
       const colors = calculateColors();
 
@@ -50,8 +58,6 @@ export default function BarGraph(props) {
 
     const winningFramework = getWinningFramework(data, successMetric, values);
     const losingFramework = getLosingFramework(data, successMetric, values);
-    console.log('winning framework', winningFramework);
-    console.log('losing framework', losingFramework);
 
     const winningFrameworkIdx = props.frameworks.indexOf(winningFramework);
     defaultColors[winningFrameworkIdx] = "rgba(25, 250, 73, 0.5)";
