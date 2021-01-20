@@ -2,12 +2,16 @@
     padding-left: 2.5rem;
 }
 
-.ffAppHeader, .ffGridRow {
+.ffAppHeader, .ffGridRow, .ffCentered {
     margin-bottom: 2.5rem !important;
 }
-
 
 .ffList li {
     list-style-type: none;
     margin-bottom: 0.5rem;
+}
+
+.ffCentered {
+    width: 100%;
+    text-align: center;
 }

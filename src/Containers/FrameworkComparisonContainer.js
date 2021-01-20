@@ -2,24 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Container, Grid } from "@material-ui/core";
 import _ from 'lodash';
 
+import GetFrameworkRecommendationButton from '../Components/GetFrameworkRecommendationButton';
 import BarGraph from "../Components/BarGraph";
 
 export default function FrameworkComparisonContainer() {
 
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
+
   const repoInfo = {
     React: { owner: "facebook", repoName: "react" },
     Angular: { owner: "angular", repoName: "angular.js" },
     Ember: { owner: "emberjs", repoName: "ember.js" },
     Vue: { owner: "vuejs", repoName: "vue" },
   };
+
   const successMetrics = {
     Issues: "lowest",
     "Pull Requests": "highest",
     Commits: "highest",
   };
 
-  const datapoints = ["Pull Requests", "Commits", "Issues"];
   const [chartData, updateChartData] = useState({});
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
@@ -118,6 +120,7 @@ export default function FrameworkComparisonContainer() {
 
   return (
     <Container>
+        <GetFrameworkRecommendationButton data={chartData} frameworks={frameworksList}/>
         <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null}/>
         <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'}/>
         <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'}/>
