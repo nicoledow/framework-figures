@@ -1,8 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Grid } from "@material-ui/core";
 import Chart from "chart.js";
+
+import AdditionalDatapointInfo from './AdditionalDatapointInfo ';
 
 export default function BarGraph(props) {
   console.log("bar graph props", props);
+  const [winningFramework, updateWinningFramework] = useState(null);
+  const [losingFramework, updateLosingFramework] = useState(null);
 
   useEffect(() => {
 
@@ -57,7 +62,10 @@ export default function BarGraph(props) {
     const values = Object.values(data);
 
     const winningFramework = getWinningFramework(data, successMetric, values);
+    updateWinningFramework(winningFramework);
+
     const losingFramework = getLosingFramework(data, successMetric, values);
+    updateLosingFramework(losingFramework);
 
     const winningFrameworkIdx = props.frameworks.indexOf(winningFramework);
     defaultColors[winningFrameworkIdx] = "rgba(25, 250, 73, 0.5)";
@@ -96,5 +104,23 @@ export default function BarGraph(props) {
     return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
   };
 
-  return <canvas id={`myChart_${props.datapoint}`} />;
+  // return <canvas id={`myChart_${props.datapoint}`} />;
+  return (
+    <Grid container direction="row" className="ffGridRow">
+      <Grid container item xs={6}>
+        <canvas id={`myChart_${props.datapoint}`} />
+      </Grid>
+      <Grid container item xs={6}>
+        <AdditionalDatapointInfo 
+          datapoint={props.datapoint} 
+          data={props.chartData} 
+          winningFramework={winningFramework} 
+          losingFramework={losingFramework}
+          successMetric={props.successMetrics[props.datapoint]}
+          failureMetric={props.successMetric === 'highest' ? 'lowest' : 'highest'}
+          />
+      </Grid>
+    </Grid>
+  )
+ 
 }

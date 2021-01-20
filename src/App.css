@@ -1,0 +1,13 @@
+.gridRight {
+    padding-left: 2.5rem;
+}
+
+.ffAppHeader, .ffGridRow {
+    margin-bottom: 2.5rem !important;
+}
+
+
+.ffList li {
+    list-style-type: none;
+    margin-bottom: 0.5rem;
+}

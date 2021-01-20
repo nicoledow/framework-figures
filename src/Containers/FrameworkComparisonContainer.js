@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import _ from 'lodash';
 
 import BarGraph from "../Components/BarGraph";
@@ -117,17 +117,11 @@ export default function FrameworkComparisonContainer() {
 
 
   return (
-    <Grid container>
-        <Grid container item xs={8}>
-            <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null}/>
-        </Grid>
-        <Grid container item xs={8}>
-            <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'}/>
-        </Grid>
-        <Grid container item xs={8}>
-            <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'}/>
-        </Grid>
-    </Grid>
+    <Container>
+        <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null}/>
+        <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'}/>
+        <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'}/>
+    </Container>
   );
 
 }
