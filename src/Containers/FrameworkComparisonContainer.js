@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Grid } from "@material-ui/core";
 
 import BarGraph from "../Components/BarGraph";
-import ChartTabs from "../Components/ChartTabs";
 
 export default function FrameworkComparisonContainer() {
-
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
   const repoInfo = {
     React: { owner: "facebook", repoName: "react" },
@@ -13,10 +12,10 @@ export default function FrameworkComparisonContainer() {
     Vue: { owner: "vuejs", repoName: "vue" },
   };
   const successMetrics = {
-      'Issues': 'lowest',
-      'Pull Requests': 'highest',
-      'Commits': 'highest'
-  }
+    Issues: "lowest",
+    "Pull Requests": "highest",
+    Commits: "highest",
+  };
 
   const datapoints = ["Pull Requests", "Commits", "Issues"];
   const [selectedTab, updateSelectedTab] = useState("Issues");
@@ -24,88 +23,69 @@ export default function FrameworkComparisonContainer() {
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
   useEffect(() => {
-    fetchGiHubData();
+    fetchGitHubData();
   }, [selectedTab]);
 
-  const fetchGiHubData = async() => {
-      console.log('in fetch git hub data', selectedTab);
 
-      switch(selectedTab) {
-          case 'Issues':
-              console.log('fetch issues data');
-              fetchIssuesData();
-              break;
-           case 'Pull Requests':
-               console.log('fetch pull requests');
-               fetchCountedResource('Pull Requests');
-               break;
-            case 'Commits':
-                console.log('fetch commits');
-                fetchCountedResource('Commits');
-                break;
-            default:
-                break;
-      }
+  const fetchGitHubData = async () => {
+    fetchIssuesData();
+    fetchCountedResource("Pull Requests");
+    fetchCountedResource("Commits");
+  };
 
-  }
+  const fetchIssuesData = async () => {
+    let issuesData = {};
 
-  
-  const fetchIssuesData = async() => {
-      let issuesData = {};
+    function fetchIssuesForFramework(framework) {
+      const url = `https://api.github.com/repos/${repoInfo[framework].owner}/${repoInfo[framework].repoName}`;
 
-      function fetchIssuesForFramework(framework) {
-          const url = `https://api.github.com/repos/${repoInfo[framework].owner}/${repoInfo[framework].repoName}`;
+      return Promise.resolve(
+        fetch(url, { headers: { Accept: "application/vnd.github.v3+json" } })
+          .then((resp) => resp.json())
+          .then((result) => {
+            const numOfIssues = result.open_issues_count;
+            return numOfIssues;
+          })
+      );
+    }
 
-          return Promise.resolve(
-              fetch(url, { headers: { Accept: "application/vnd.github.v3+json" } })
-              .then(resp => resp.json())
-              .then(result => {
-                  const numOfIssues = result.open_issues_count;
-                  console.log('num of issues', numOfIssues);
-                  return numOfIssues;
-              })
-          )
-      }
+    issuesData.React = await fetchIssuesForFramework("React");
+    issuesData.Angular = await fetchIssuesForFramework("Angular");
+    issuesData.Ember = await fetchIssuesForFramework("Ember");
+    issuesData.Vue = await fetchIssuesForFramework("Vue");
 
-      issuesData.React = await fetchIssuesForFramework('React');
-      issuesData.Angular = await fetchIssuesForFramework('Angular');
-      issuesData.Ember = await fetchIssuesForFramework('Ember');
-      issuesData.Vue = await fetchIssuesForFramework('Vue');
-      console.log('issuesData', issuesData);
+    updateChartData({ ...chartData, Issues: issuesData });
+  };
 
-      updateChartData({...chartData, 'Issues': issuesData });
-  }
-
-  const fetchCountedResource = async(key) => {
+  const fetchCountedResource = async (key) => {
     let data = {};
 
-        function fetchCountForFramework(framework, key) {
-            const resource = key === 'Commits' ? 'commits' : 'pulls';
-            const url = `https://api.github.com/repos/${repoInfo[framework].owner}/${repoInfo[framework].repoName}/${resource}?per_page=1`;
+    function fetchCountForFramework(framework, key) {
+      const resource = key === "Commits" ? "commits" : "pulls";
+      const url = `https://api.github.com/repos/${repoInfo[framework].owner}/${repoInfo[framework].repoName}/${resource}?per_page=1`;
 
-            return Promise.resolve(
-                fetch(url, { headers: { Accept: "application/vnd.github.v3+json" } })
-                .then((resp) => {
-                    const resourceCount = getNumOfResultsFromPaginationHeader(resp);
-                    return resourceCount;
-                })
-                .catch(err => {
-                    genericFetchError();
-                    console.log(`${key} fetch err`, err);
-                })
-            );
-        }
+      return Promise.resolve(
+        fetch(url, { headers: { Accept: "application/vnd.github.v3+json" } })
+          .then((resp) => {
+            const resourceCount = getNumOfResultsFromPaginationHeader(resp);
+            return resourceCount;
+          })
+          .catch((err) => {
+            genericFetchError();
+            console.log(`${key} fetch err`, err);
+          })
+      );
+    }
 
-    data.React = await fetchCountForFramework('React', key);
-    data.Angular = await fetchCountForFramework('Angular', key);
-    data.Ember = await fetchCountForFramework('Ember', key);
-    data.Vue = await fetchCountForFramework('Vue', key);
-    
-    const state = {...chartData};
+    data.React = await fetchCountForFramework("React", key);
+    data.Angular = await fetchCountForFramework("Angular", key);
+    data.Ember = await fetchCountForFramework("Ember", key);
+    data.Vue = await fetchCountForFramework("Vue", key);
+
+    const state = { ...chartData };
     state[key] = data;
     updateChartData(state);
   };
-
 
   //parse pagination links and get the 'last' page, revealing the number of that resource if per_page is set to 1
   const getNumOfResultsFromPaginationHeader = (response) => {
@@ -121,26 +101,23 @@ export default function FrameworkComparisonContainer() {
     return lastPageNum;
   };
 
-
   //generic error for user when there is an issue fetching data from GitHub
   const genericFetchError = () => {
     alert("Sorry, GitHub data could not be fetched at this time.");
   };
 
+
   return (
-    <div className="text-center w-75">
-      <ChartTabs
-        selectedTab={selectedTab}
-        updateSelectedTab={updateSelectedTab}
-        datapoints={datapoints}
-        frameworks={frameworksList}
-      />
-      <BarGraph
-        selectedTab={selectedTab}
-        chartData={chartData}
-        frameworks={frameworksList}
-        successMetrics={successMetrics}
-      />
-    </div>
+    <Grid container>
+        <Grid container item xs={6}>
+            <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        </Grid>
+        <Grid container item xs={6}>
+            <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        </Grid>
+        <Grid container item xs={6}>
+            <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics}/>
+        </Grid>
+    </Grid>
   );
 }

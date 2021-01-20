@@ -5,8 +5,9 @@ export default function BarGraph(props) {
   console.log("bar graph props", props);
 
   useEffect(() => {
-    const canvas = document.getElementById("myChart");
-    const data = props.chartData[props.selectedTab];
+    const canvas = document.getElementById(`myChart_${props.datapoint}`);
+    const data = props.chartData[props.datapoint];
+    console.log('data?', data);
 
     if (data) {
       console.log("inside if data");
@@ -20,17 +21,19 @@ export default function BarGraph(props) {
           labels: props.frameworks,
           datasets: [
             {
-              label: `Number of ${props.selectedTab}`,
+              label: `Number of ${props.datapoint}`,
               data: valuesForGraph,
               backgroundColor: colors,
               borderColor: colors,
+              hoverBackgroundColor: colors,
+              hoverBorderColor: colors,
               borderWidth: 1,
             },
           ],
         },
       });
     }
-  }, [props.selectedTab]);
+  }, [props.chartData]);
 
   const calculateColors = () => {
 
@@ -41,8 +44,8 @@ export default function BarGraph(props) {
       "rgba(232, 232, 232, 1)"
     ];
 
-    const data = props.chartData[props.selectedTab];
-    const successMetric = props.successMetrics[props.selectedTab];
+    const data = props.chartData[props.datapoint];
+    const successMetric = props.successMetrics[props.datapoint];
     const values = Object.values(data);
 
     const winningFramework = getWinningFramework(data, successMetric, values);
@@ -87,5 +90,5 @@ export default function BarGraph(props) {
     return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
   };
 
-  return <canvas id="myChart" />;
+  return <canvas id={`myChart_${props.datapoint}`} />;
 }
