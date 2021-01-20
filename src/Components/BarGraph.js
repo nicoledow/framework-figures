@@ -61,10 +61,10 @@ export default function BarGraph(props) {
     const successMetric = props.successMetrics[props.datapoint];
     const values = Object.values(data);
 
-    const winningFramework = getWinningFramework(data, successMetric, values);
+    const winningFramework = props.getWinningFramework(data, successMetric, values);
     updateWinningFramework(winningFramework);
 
-    const losingFramework = getLosingFramework(data, successMetric, values);
+    const losingFramework = props.getLosingFramework(data, successMetric, values);
     updateLosingFramework(losingFramework);
 
     const winningFrameworkIdx = props.frameworks.indexOf(winningFramework);
@@ -76,33 +76,33 @@ export default function BarGraph(props) {
     return defaultColors;
   };
 
-  const getWinningFramework = (data, successMetric, values) => {
-    let winnerValue;
+  // const getWinningFramework = (data, successMetric, values) => {
+  //   let winnerValue;
 
-    if (successMetric === "lowest") {
-      winnerValue = Math.min(...values);
-    } else {
-      winnerValue = Math.max(...values);
-    }
+  //   if (successMetric === "lowest") {
+  //     winnerValue = Math.min(...values);
+  //   } else {
+  //     winnerValue = Math.max(...values);
+  //   }
 
-    return findKeyFromValue(winnerValue, data);
-  };
+  //   return findKeyFromValue(winnerValue, data);
+  // };
 
-  const getLosingFramework = (data, successMetric, values) => {
-    let loserValue;
+  // const getLosingFramework = (data, successMetric, values) => {
+  //   let loserValue;
 
-    if (successMetric === 'lowest') {
-      loserValue = Math.max(...values);
-    } else {
-      loserValue = Math.min(...values);
-    }
+  //   if (successMetric === 'lowest') {
+  //     loserValue = Math.max(...values);
+  //   } else {
+  //     loserValue = Math.min(...values);
+  //   }
 
-    return findKeyFromValue(loserValue, data);
-  };
+  //   return findKeyFromValue(loserValue, data);
+  // };
 
-  const findKeyFromValue = (value, obj) => {
-    return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
-  };
+  // const findKeyFromValue = (value, obj) => {
+  //   return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
+  // };
 
   // return <canvas id={`myChart_${props.datapoint}`} />;
   return (

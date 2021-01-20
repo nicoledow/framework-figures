@@ -8,6 +8,7 @@ import BarGraph from "../Components/BarGraph";
 export default function FrameworkComparisonContainer() {
 
   const frameworksList = ["React", "Angular", "Ember", "Vue"];
+  const datapoints = ["Issues", "Commits", "Pull Requests"];
 
   const repoInfo = {
     React: { owner: "facebook", repoName: "react" },
@@ -117,13 +118,41 @@ export default function FrameworkComparisonContainer() {
     alert("Sorry, GitHub data could not be fetched at this time.");
   };
 
+  const getWinningFramework = (data, successMetric, values) => {
+    let winnerValue;
+
+    if (successMetric === "lowest") {
+      winnerValue = Math.min(...values);
+    } else {
+      winnerValue = Math.max(...values);
+    }
+
+    return findKeyFromValue(winnerValue, data);
+  };
+
+  const getLosingFramework = (data, successMetric, values) => {
+    let loserValue;
+
+    if (successMetric === 'lowest') {
+      loserValue = Math.max(...values);
+    } else {
+      loserValue = Math.min(...values);
+    }
+
+    return findKeyFromValue(loserValue, data);
+  };
+
+  const findKeyFromValue = (value, obj) => {
+    return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
+  };
+
 
   return (
     <Container>
-        <GetFrameworkRecommendationButton data={chartData} frameworks={frameworksList}/>
-        <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null}/>
-        <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'}/>
-        <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'}/>
+        <GetFrameworkRecommendationButton data={chartData} frameworks={frameworksList} datapoints={datapoints} successMetrics={successMetrics} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+        <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+        <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+        <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
     </Container>
   );
 
