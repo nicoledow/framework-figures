@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import _ from 'lodash';
 
 import GetFrameworkRecommendationButton from '../Components/GetFrameworkRecommendationButton';
@@ -24,7 +24,7 @@ export default function FrameworkComparisonContainer() {
     Commits: "highest",
   };
 
-  const [chartData, updateChartData] = useState({});
+  const [chartData, updateChartData] = useState({ Issues: null, Commits: null, 'Pull Requests': null});
 
   //when component mounts, fetch data from GitHub API for each of the 3 datapoints (pull requests, open issues, commits);
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function FrameworkComparisonContainer() {
   }, []);
 
 
-  const fetchGitHubData = async () => {
+  const fetchGitHubData = async() => {
     fetchIssuesData();
     fetchCountedResource("Pull Requests");
     fetchCountedResource("Commits");
@@ -64,7 +64,7 @@ export default function FrameworkComparisonContainer() {
     issuesData.Ember = await fetchIssuesForFramework("Ember");
     issuesData.Vue = await fetchIssuesForFramework("Vue");
 
-    
+    // debugger;
     if (!chartData.Issues || !_.isEqual(chartData.Issues, issuesData)) {
         updateChartData({ ...chartData, Issues: issuesData });
     } 
@@ -155,14 +155,21 @@ export default function FrameworkComparisonContainer() {
     return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
   };
 
-
-  return (
-    <Container>
-        <GetFrameworkRecommendationButton data={chartData} frameworks={frameworksList} datapoints={datapoints} successMetrics={successMetrics} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
-        <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
-        <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
-        <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
-    </Container>
-  );
+  console.log('chartData', chartData);
+  if (Object.keys(chartData).length === datapoints.length) {
+    return (
+      <Container>
+          <GetFrameworkRecommendationButton data={chartData} frameworks={frameworksList} datapoints={datapoints} successMetrics={successMetrics} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+          <BarGraph chartData={chartData} datapoint={'Issues'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchIssuesData} refreshArg={null} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+          <BarGraph chartData={chartData} datapoint={'Commits'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Commits'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+          <BarGraph chartData={chartData} datapoint={'Pull Requests'} frameworks={frameworksList} successMetrics={successMetrics} refreshData={fetchCountedResource} refreshArg={'Pull Requests'} getWinningFramework={getWinningFramework} getLosingFramework={getLosingFramework}/>
+      </Container>
+    );
+  } else {
+    return (
+      <div>Loading...</div>
+    )
+  }
+ 
 
 }
