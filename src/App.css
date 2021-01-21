@@ -1,26 +1,83 @@
-.gridRight {
-    padding-left: 2.5rem;
+/*
+white: fffbfa
+darker green 00bd9d
+middle blue green 8bd7d2
+
+*/
+
+.App {
+  text-align: center;
+  background-color: #fffbfa;
 }
 
-.ffAppHeader, .ffGridRow, .ffCentered {
-    margin-bottom: 2.5rem !important;
+.colorPrimary {
+  color: #00bd9d;
+}
+
+.colorSecondary {
+  color: #8bd7d2;
+}
+
+.bgColorSecondary {
+  background-color: #8bd7d2;
+}
+
+.colorWhite {
+  color: #fffbfa;
+}
+
+.gridRight {
+  padding-left: 2.5rem;
+}
+
+.ffAppHeader,
+.ffGridRow,
+.ffCentered {
+  margin-bottom: 2.5rem !important;
+}
+
+
+.ffButton {
+  outline: none;
+  cursor: pointer;
+  background: none;
+  transition: 0.33s;
+  font-size: 20px;
+  border-radius: 5px;
+  font-family: "Roboto", sans-serif;
+  color: #512DA8;
+  border: 1px solid #512DA8;
+}
+
+.ffButton:hover {
+  outline: none;
+  cursor: pointer;
+  background: none;
+  transition: 0.5s;
+  font-size: 20px;
+  border-radius: 5px;
+  font-family: "Lato", sans-serif;
+  border: none;
+  color: #fffbfa;
+  font-size: 28px;
+  transform: scale(1.1);
+  background-color: #512DA8;
 }
 
 .ffList li {
-    list-style-type: none;
-    margin-bottom: 0.5rem;
+  list-style-type: none;
+  margin-bottom: 0.5rem;
 }
 
 .ffCentered {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .ffModal {
-    background-color: #fcfffd;
-    border-radius: 1rem;
-    width: 80%;
-    height: 80%;
-    margin: 10%;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  width: 40%;
+  height: 40%;
+  margin: 5% 30% 30% 10%;
 }
-
