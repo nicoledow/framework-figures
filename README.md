@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# About "Framework Figures"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Framework figures is a React application, bootstrapped by `create-react-app`, that compares data regarding the number of commits, issues, and pull requests in the official repositories of four popular client-side JavaScript frameworks: `React`, `Angular`, `Ember`, and `Vue`.
 
-## Available Scripts
+ The application pulls in data from these four repositories every 30 seconds, and updates any corresponding components if necessary. To keep the user experience smoother, if no changes to the data have occurred since the last sync the user will see no change. This is a single page application (SPA), so there will be no page refreshes.
 
-In the project directory, you can run:
+## How to Run Framework Figures Locally
+You will need `npm` installed before beginning.
 
-### `yarn start`
+Clone the repo, CD into the directory, and run the following commands:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`npm install`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`npm start`
 
-### `yarn test`
+# About the Code
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Why the Metrics Were Chosen
 
-### `yarn build`
+From the various data options I could have used to determine activity, community support, and stability, I chose to evaluate the number of commits, pull requests, and issues. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Commits indicate actual interaction with the repository, and is, in my opinion, a better indicator than watchers or stars. In this application, a higher number earns a framework more favorability points.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Pull requests indicate continual improvements and bug fixes to the code, which is a positive indicator for development activity and community support and earns a framework favorability points.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- A high number of issues could indicate problematic code, and decrease a framework's ranking in Framework Figures.
 
-### `yarn eject`
+### Considerations Regarding the Metrics
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+There are two sides to every coin! Further analysis and comparison of more than these 3 datapoints could reveal that a high number of issues actually indicates good stability, if associated pull requests to solve a raised issue follow swiftly. Similarly, one could ask if a high number of pull requests is correlated to a high number of issues that need to be fixed. More statistical comparison could reveal interesting findings about what is _truly_ the most reliable JavaScript framework.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Code/Component Organization
+The powerhouse of this application is the `FrameworkComparisonContainer` component. This component holds any logic that either fetches data for or may be used by any child components, such as data fetched from the GitHub API. I created this large container component and used it to house data-heavy functions so that these functions could be defined in just one place and reused in several components under its umbrella. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+For example, both the `BarGraph` and `GetFrameworkRecommendation` needed the `getWinningFramework` function, so it made sense to define this function in one parent container where it could be passed to both children. Additionally, this parent component manages the `chartData` state so that it is consistent across both the `BarGraph` and `GetFrameworkRecommendation` components. Writing this code, I really aimed to keep it DRY.
 
-## Learn More
+The `FrameworkComparisonContainer` makes use of the useEffect hook, triggering the function `fetchGitHubData()` after the component renders, then a piece of state called `chartData` is updated with the results.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Automatic Updates to Data
+The charts will pull new data from the GitHub API regarding issues, commits, and PRs every thirty seconds, so the data is always current. Each chart component (`BarGraph`) creates an interval after rendering its initial data, also through the use of the `useEffect` hook. Every thirty seconds, `fetchGitHubData` will rerun. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+However, the functions called by this function contains a check (shown below) to ensure state is only updated and the component is only re-rendered if the chart is going to actually change because new data has been received. If the new statistics are the same as before, no re-render should happen.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+An example:
+```
+ if (!chartData[key] || !_.isEqual(chartData[key], newChartData[key])) {
+        updateChartData(newChartData);
+    } 
+```
