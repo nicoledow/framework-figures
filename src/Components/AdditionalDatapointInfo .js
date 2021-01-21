@@ -1,20 +1,19 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
 
 export default function AdditionalDatapointInfo(props) {
   return (
     <div class="ffCentered">
-      <Typography align="center" class="textColorSecondary" variant="h4">
+      <h3 className="colorPrimary">
         {props.datapoint}
-      </Typography>
+      </h3>
       <ul className="ffList">
         <li>
-          <strong>{props.winningFramework}</strong> wins this category because
+          <strong className="colorSecondary">{props.winningFramework}</strong> wins this category because
           it has the {props.successMetric} number of{" "}
           {props.datapoint.toLowerCase()}
         </li>
         <li>
-          <strong>{props.losingFramework}</strong> loses this category because
+          <strong className="colorSecondary">{props.losingFramework}</strong> loses this category because
           it has the {props.failureMetric} number of{" "}
           {props.datapoint.toLowerCase()}
         </li>

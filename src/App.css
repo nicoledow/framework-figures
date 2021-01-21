@@ -1,14 +1,9 @@
-/*
-white: fffbfa
-darker green 00bd9d
-middle blue green 8bd7d2
-
-*/
-
 .App {
   text-align: center;
   background-color: #fffbfa;
+  font-family: "Roboto", sans-serif;
 }
+
 
 .colorPrimary {
   color: #00bd9d;
@@ -36,17 +31,17 @@ middle blue green 8bd7d2
   margin-bottom: 2.5rem !important;
 }
 
-
 .ffButton {
   outline: none;
   cursor: pointer;
   background: none;
   transition: 0.33s;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 3px;
   font-family: "Roboto", sans-serif;
-  color: #512DA8;
-  border: 1px solid #512DA8;
+  color: #512da8;
+  border: 1px solid #512da8;
+  padding: 0.8rem;
 }
 
 .ffButton:hover {
@@ -55,13 +50,13 @@ middle blue green 8bd7d2
   background: none;
   transition: 0.5s;
   font-size: 20px;
-  border-radius: 5px;
-  font-family: "Lato", sans-serif;
+  border-radius: 3px;
+  font-family: "Roboto", sans-serif;
   border: none;
   color: #fffbfa;
-  font-size: 28px;
   transform: scale(1.1);
-  background-color: #512DA8;
+  background-color: #512da8;
+  padding: 0.8rem;
 }
 
 .ffList li {

@@ -50,6 +50,10 @@ export default function FrameworkComparisonContainer() {
             const numOfIssues = result.open_issues_count;
             return numOfIssues;
           })
+          .catch(err => {
+              genericFetchError();
+              console.log('fetch issues err', err);
+          })
       );
     }
 
@@ -60,7 +64,6 @@ export default function FrameworkComparisonContainer() {
 
     
     if (!chartData.Issues || !_.isEqual(chartData.Issues, issuesData)) {
-        console.log('issues state should update');
         updateChartData({ ...chartData, Issues: issuesData });
     } 
   };
@@ -94,7 +97,6 @@ export default function FrameworkComparisonContainer() {
     newChartData[key] = data;
 
     if (!chartData[key] || !_.isEqual(chartData[key], newChartData[key])) {
-        // console.log(`should update state for ${key}`);
         updateChartData(newChartData);
     } 
   };

@@ -5,14 +5,12 @@ import Chart from "chart.js";
 import AdditionalDatapointInfo from './AdditionalDatapointInfo ';
 
 export default function BarGraph(props) {
-  // console.log("bar graph props", props);
   const [winningFramework, updateWinningFramework] = useState(null);
   const [losingFramework, updateLosingFramework] = useState(null);
 
   useEffect(() => {
 
     let interval = setInterval(() => {
-      console.log('refresh data');
       props.refreshData(props.refreshArg);
     }, 10000);
 
