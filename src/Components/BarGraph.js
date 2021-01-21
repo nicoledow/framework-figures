@@ -5,7 +5,7 @@ import Chart from "chart.js";
 import AdditionalDatapointInfo from './AdditionalDatapointInfo ';
 
 export default function BarGraph(props) {
-  console.log("bar graph props", props);
+  // console.log("bar graph props", props);
   const [winningFramework, updateWinningFramework] = useState(null);
   const [losingFramework, updateLosingFramework] = useState(null);
 
@@ -76,35 +76,7 @@ export default function BarGraph(props) {
     return defaultColors;
   };
 
-  // const getWinningFramework = (data, successMetric, values) => {
-  //   let winnerValue;
-
-  //   if (successMetric === "lowest") {
-  //     winnerValue = Math.min(...values);
-  //   } else {
-  //     winnerValue = Math.max(...values);
-  //   }
-
-  //   return findKeyFromValue(winnerValue, data);
-  // };
-
-  // const getLosingFramework = (data, successMetric, values) => {
-  //   let loserValue;
-
-  //   if (successMetric === 'lowest') {
-  //     loserValue = Math.max(...values);
-  //   } else {
-  //     loserValue = Math.min(...values);
-  //   }
-
-  //   return findKeyFromValue(loserValue, data);
-  // };
-
-  // const findKeyFromValue = (value, obj) => {
-  //   return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
-  // };
-
-  // return <canvas id={`myChart_${props.datapoint}`} />;
+ 
   return (
     <Grid container direction="row" className="ffGridRow">
       <Grid container item xs={6}>
@@ -117,7 +89,7 @@ export default function BarGraph(props) {
           winningFramework={winningFramework} 
           losingFramework={losingFramework}
           successMetric={props.successMetrics[props.datapoint]}
-          failureMetric={props.successMetric === 'highest' ? 'lowest' : 'highest'}
+          failureMetric={props.successMetrics[props.datapoint] === 'highest' ? 'lowest' : 'highest'}
           />
       </Grid>
     </Grid>

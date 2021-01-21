@@ -2,8 +2,6 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 
 export default function AdditionalDatapointInfo(props) {
-    console.log('additional info props', props);
-
     return(
         <Grid container direction="row" className="gridRight">
             <Grid container item xs={12}>

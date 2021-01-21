@@ -94,7 +94,7 @@ export default function FrameworkComparisonContainer() {
     newChartData[key] = data;
 
     if (!chartData[key] || !_.isEqual(chartData[key], newChartData[key])) {
-        console.log(`should update state for ${key}`);
+        // console.log(`should update state for ${key}`);
         updateChartData(newChartData);
     } 
   };
