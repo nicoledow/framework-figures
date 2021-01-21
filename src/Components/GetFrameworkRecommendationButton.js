@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Modal } from "@material-ui/core";
 
 export default function GetFrameworkRecommendationButton(props) {
   
@@ -8,12 +7,6 @@ export default function GetFrameworkRecommendationButton(props) {
   const [recommendation, setRecommendation] = useState(null);
   const [shouldDisplayRecommendation, updateShouldDisplayRecommendation,] = useState(false);
 
-  //a weighting system for the importance of our metrics
-  const issueWeights = {
-    Issues: 1,
-    Commits: 1,
-    "Pull Requests": 1.25,
-  };
 
   // look at the values for each metric we are measuring with, and organize into an object
     // returns an object such  as: {Issues: "React", Commits: "Vue", Pull Requests: "Angular"}
@@ -21,7 +14,6 @@ export default function GetFrameworkRecommendationButton(props) {
     const serializedData = {};
 
     props.datapoints.forEach((datapoint) => {
-      serializedData[datapoint] = {};
       const data = props.data[datapoint];
       if (data) {
         const values = Object.values(data);
@@ -46,7 +38,9 @@ export default function GetFrameworkRecommendationButton(props) {
 
     props.datapoints.forEach((datapoint) => {
       const winningFramework = winnersAndLosers[datapoint];
-      points[winningFramework] += issueWeights[datapoint];
+      if (winningFramework) {
+        points[winningFramework] += 1;
+      }
     });
 
     const winner = Object.keys(points).reduce((a, b) =>
