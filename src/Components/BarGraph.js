@@ -8,15 +8,17 @@ export default function BarGraph(props) {
   const [winningFramework, updateWinningFramework] = useState(null);
   const [losingFramework, updateLosingFramework] = useState(null);
 
+  //check GitHub repositories every 30 seconds to see if there are any updates
   useEffect(() => {
 
     let interval = setInterval(() => {
       props.refreshData(props.refreshArg);
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(interval);
   })
 
+  // when chartData is updated, render a chart based on the updated data
   useEffect(() => {
     const canvas = document.getElementById(`myChart_${props.datapoint}`);
     const data = props.chartData[props.datapoint];
@@ -46,6 +48,7 @@ export default function BarGraph(props) {
     }
   }, [props.chartData]);
 
+  //create an array of colors to pass to the chart, with a red value for the worst framework and green for the best
   const calculateColors = () => {
 
     const defaultColors = [

@@ -1,5 +1,6 @@
 import React from "react";
 
+//display explanation of which framework won each category and why
 export default function AdditionalDatapointInfo(props) {
   return (
     <div class="ffCentered">

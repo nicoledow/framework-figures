@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import { Modal } from "@material-ui/core";
 
 export default function GetFrameworkRecommendationButton(props) {
-  console.log("rec button props", props);
+  
+  //determine whether a recommendation is available (based on whether data has loaded)
+    //determine whether recommendation should show, based on whether the button has been clicked or not
   const [recommendation, setRecommendation] = useState(null);
-  const [
-    shouldDisplayRecommendation,
-    updateShouldDisplayRecommendation,
-  ] = useState(false);
+  const [shouldDisplayRecommendation, updateShouldDisplayRecommendation,] = useState(false);
 
-  console.log("get rec props", props);
+  //a weighting system for the importance of our metrics
   const issueWeights = {
     Issues: 1,
     Commits: 1,
     "Pull Requests": 1.25,
   };
 
+  // look at the values for each metric we are measuring with, and organize into an object
+    // returns an object such  as: {Issues: "React", Commits: "Vue", Pull Requests: "Angular"}
   const serializeFrameworkWinners = () => {
     const serializedData = {};
 
@@ -34,8 +35,9 @@ export default function GetFrameworkRecommendationButton(props) {
     return serializedData;
   };
 
+  // tally points for each framework by whether they "win" or "lose" in any of the 3 metrics
   const generateRecommendation = () => {
-    const winnersAndLosers = serializeFrameworkWinners(); //{Issues: "React", Commits: "Vue", Pull Requests: "Angular"}
+    const winnersAndLosers = serializeFrameworkWinners(); 
 
     const points = {};
     props.frameworks.forEach((framework) => {

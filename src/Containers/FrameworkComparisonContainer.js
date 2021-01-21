@@ -17,6 +17,7 @@ export default function FrameworkComparisonContainer() {
     Vue: { owner: "vuejs", repoName: "vue" },
   };
 
+  // how we will determine which framework wins in each category
   const successMetrics = {
     Issues: "lowest",
     "Pull Requests": "highest",
@@ -37,6 +38,7 @@ export default function FrameworkComparisonContainer() {
     fetchCountedResource("Commits");
   };
 
+  // fetch issues data, add the number of issues for each repo to an object and update the chartData state
   const fetchIssuesData = async () => {
     let issuesData = {};
 
@@ -68,6 +70,8 @@ export default function FrameworkComparisonContainer() {
     } 
   };
 
+  // fetch the pull requests or commits resources
+    // request 1 result per page and use the link for the last page (found in headers) to determine the number of that resource
   const fetchCountedResource = async (key) => {
     let data = {};
 
@@ -120,6 +124,7 @@ export default function FrameworkComparisonContainer() {
     alert("Sorry, GitHub data could not be fetched at this time.");
   };
 
+  // use the winner criteria (highest or lowest number) to determine which framework wins per each metric
   const getWinningFramework = (data, successMetric, values) => {
     let winnerValue;
 
@@ -132,6 +137,7 @@ export default function FrameworkComparisonContainer() {
     return findKeyFromValue(winnerValue, data);
   };
 
+  // use the loser criteria (highest or lowest number) to determine which framework losees per each metric
   const getLosingFramework = (data, successMetric, values) => {
     let loserValue;
 
@@ -144,6 +150,7 @@ export default function FrameworkComparisonContainer() {
     return findKeyFromValue(loserValue, data);
   };
 
+  // use the value to find the object key, and thus the framework name
   const findKeyFromValue = (value, obj) => {
     return Object.entries(obj).find(pair => pair[1] === value)[0] || false;
   };
