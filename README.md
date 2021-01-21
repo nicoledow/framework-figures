@@ -17,13 +17,13 @@ Clone the repo, CD into the directory, and run the following commands:
 
 ## Why the Metrics Were Chosen
 
-From the various data options I could have used to determine activity, community support, and stability, I chose to evaluate the number of commits, pull requests, and issues. 
+From the various data options I could have used to determine activity, community support, and stability, I chose to evaluate the number of commits, pull requests, and issues. Here is why:
 
 - Commits indicate actual interaction with the repository, and is, in my opinion, a better indicator than watchers or stars. In this application, a higher number earns a framework more favorability points.
 
 - Pull requests indicate continual improvements and bug fixes to the code, which is a positive indicator for development activity and community support and earns a framework favorability points.
 
-- A high number of issues could indicate problematic code, and decrease a framework's ranking in Framework Figures.
+- A high number of issues could indicate problematic code, and causes a decrease in a framework's ranking in Framework Figures.
 
 ### Considerations Regarding the Metrics
 
