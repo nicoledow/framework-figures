@@ -66,7 +66,7 @@ export default function GetFrameworkRecommendationButton(props) {
             's score, as they indicate more people improving the code.
           </p>
           <p>
-            In addition to this, a lower number of contributed to
+            In addition to this, a lower number of issues contributed to
             {recommendation}'s score.
           </p>
         </div>
