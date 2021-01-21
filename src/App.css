@@ -15,3 +15,12 @@
     width: 100%;
     text-align: center;
 }
+
+.ffModal {
+    background-color: #fcfffd;
+    border-radius: 1rem;
+    width: 80%;
+    height: 80%;
+    margin: 10%;
+}
+

@@ -6,7 +6,7 @@ import FrameworkComparisonContainer from './Containers/FrameworkComparisonContai
 
 function App() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" class="App">
       <AppHeader />
       <FrameworkComparisonContainer />
     </Container>
