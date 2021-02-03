@@ -3,7 +3,7 @@
 
 Framework figures is a React application, bootstrapped by `create-react-app`, that compares data regarding the number of commits, issues, and pull requests in the official repositories of four popular client-side JavaScript frameworks: `React`, `Angular`, `Ember`, and `Vue`.
 
- The application pulls in data from these four repositories every 30 seconds, and updates any corresponding components if necessary. To keep the user experience smoother, if no changes to the data have occurred since the last sync the user will see no change. This is a single page application (SPA), so there will be no page refreshes.
+ The application pulls in data for these four repositories (via the GitHub API) every 30 seconds, and updates any corresponding components if necessary. To keep the user experience smoother, if no changes to the data have occurred since the last sync the user will see no change. This is a single page application (SPA), so there will be no page refreshes.
 
 ## How to Run Framework Figures Locally
 You will need `npm` installed before beginning.
